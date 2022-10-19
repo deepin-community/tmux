@@ -1,0 +1,35 @@
+Source: tmux
+Section: admin
+Priority: optional
+Maintainer: Romain Francoise <rfrancoise@debian.org>
+Build-Depends: bison,
+               debhelper-compat (= 13),
+               dpkg-dev (>= 1.16.1~),
+               libevent-dev (>> 2.0.10),
+               libncurses5-dev,
+               libutempter-dev,
+               libutil-freebsd-dev [kfreebsd-any],
+               pkg-config
+Standards-Version: 4.6.0
+Rules-Requires-Root: no
+Homepage: https://tmux.github.io/
+Vcs-Browser: https://salsa.debian.org/rfrancoise/tmux
+Vcs-Git: https://salsa.debian.org/rfrancoise/tmux.git
+
+Package: tmux
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Description: terminal multiplexer
+ tmux enables a number of terminals (or windows) to be accessed and
+ controlled from a single terminal like screen. tmux runs as a
+ server-client system. A server is created automatically when necessary
+ and holds a number of sessions, each of which may have a number of
+ windows linked to it. Any number of clients may connect to a session,
+ or the server may be controlled by issuing commands with tmux.
+ Communication takes place through a socket, by default placed in /tmp.
+ Moreover tmux provides a consistent and well-documented command
+ interface, with the same syntax whether used interactively, as a key
+ binding, or from the shell. It offers a choice of vim or Emacs key
+ layouts.

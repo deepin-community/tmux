@@ -1,0 +1,44 @@
+commit 32f2d9d089ced7d693aa412821f1d66134877cf0
+Author: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date:   Tue Jul 6 08:26:00 2021 +0000
+
+    Improve error reporting when the tmux /tmp directory cannot be created
+    or used, GitHub issue 2765 from Uwe Kleine-Koenig.
+
+--- a/tmux.c
++++ b/tmux.c
+@@ -207,16 +207,22 @@
+ 	free(paths);
+ 
+ 	xasprintf(&base, "%s/tmux-%ld", path, (long)uid);
+-	if (mkdir(base, S_IRWXU) != 0 && errno != EEXIST)
++	if (mkdir(base, S_IRWXU) != 0 && errno != EEXIST) {
++		xasprintf(cause, "couldn't create directory %s (%s)", base,
++		    strerror(errno));
+ 		goto fail;
+-	if (lstat(base, &sb) != 0)
++	}
++	if (lstat(base, &sb) != 0) {
++		xasprintf(cause, "couldn't read directory %s (%s)", base,
++		    strerror(errno));
+ 		goto fail;
++	}
+ 	if (!S_ISDIR(sb.st_mode)) {
+-		errno = ENOTDIR;
++		xasprintf(cause, "%s is not a directory", base);
+ 		goto fail;
+ 	}
+ 	if (sb.st_uid != uid || (sb.st_mode & S_IRWXO) != 0) {
+-		errno = EACCES;
++		xasprintf(cause, "directory %s has unsafe permissions", base);
+ 		goto fail;
+ 	}
+ 	xasprintf(&path, "%s/%s", base, label);
+@@ -224,7 +230,6 @@
+ 	return (path);
+ 
+ fail:
+-	xasprintf(cause, "error creating %s (%s)", base, strerror(errno));
+ 	free(base);
+ 	return (NULL);
+ }

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Check for regressions on https://github.com/tmux/tmux/issues/2022,
+# where a utmp entry would not be created for new tmux sessions
+
+set -e
+
+SESSION="test_session"
+
+if who | grep -q tmux; then
+    echo >&2 "tmux should not have registered utmp entries yet"
+    exit 1
+fi
+
+tmux new-session -d -s $SESSION
+
+# make sure a utmp entry was created
+if ! who | grep -q tmux; then
+  # clean up
+  tmux kill-session -t $SESSION
+  echo >&2 "no utmp entries found for tmux"
+  exit 1
+fi
+
+tmux kill-session -t $SESSION
+if who | grep -q tmux; then
+    echo >&2 "tmux should have unregistered utmp entries"
+    exit 1
+fi

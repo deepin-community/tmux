@@ -1,0 +1,2 @@
+version=4
+https://github.com/tmux/tmux/releases /tmux/tmux/releases/download/.+/tmux-(.+).tar.gz debian uupdate

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+SESSION="test_session"
+
+if tmux list-sessions 2>/dev/null; then
+    echo >&2 "Found unexpected tmux session"
+    exit 1
+fi
+tmux new-session -d -s $SESSION
+tmux list-sessions | grep -q $SESSION >/dev/null
+tmux kill-session -t $SESSION
+if tmux list-sessions 2>/dev/null; then
+    echo >&2 "Found unexpected tmux session"
+    exit 1
+fi

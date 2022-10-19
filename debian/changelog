@@ -1,0 +1,1192 @@
+tmux (3.2a-4) unstable; urgency=medium
+
+  * Cherry-pick commit b1a8c0fe022e from upstream to fix cross-compilation
+    (closes: #992949).
+  * Switch to debhelper compat level 13.
+  * Update watch file to version 4; no changes.
+  * Set `Rules-Requires-Root' to "no".
+  * Bump Standards-Version to 4.6.0.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 12 Sep 2021 00:18:18 +0200
+
+tmux (3.2a-3) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 15 Aug 2021 12:43:08 +0200
+
+tmux (3.2a-2) experimental; urgency=medium
+
+  * Cherry-pick upstream commit 32f2d9d089ce (closes: #990215).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 10 Jul 2021 19:16:19 +0200
+
+tmux (3.2a-1) experimental; urgency=medium
+
+  * New upstream release.
+  * Remove obsolete debian/maintscript stanza, thanks to the Janitor bot.
+  * Add basic autopkgtest test suite, thanks to Athos Ribeiro (LP: #1679410).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 10 Jun 2021 12:10:55 +0200
+
+tmux (3.2~rc4-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+  * Bump Standards-Version to 4.5.1.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 04 Mar 2021 20:14:01 +0100
+
+tmux (3.2~rc3-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 08 Nov 2020 21:37:02 +0100
+
+tmux (3.2~rc2-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+  * The specified target window for 'new-window -t' no longer needs to
+    exist, reverting to pre-3.0 behavior (closes: #944778).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 24 Jul 2020 13:22:01 +0200
+
+tmux (3.2~rc1-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 24 Jun 2020 11:04:14 +0200
+
+tmux (3.1c-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Drop security fix patch included upstream.
+  * Set upstream metadata fields: Bug-Submit.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 01 Nov 2020 13:45:43 +0100
+
+tmux (3.1b-2) unstable; urgency=high
+
+  * Cherry-pick upstream commit a868bacb46 to fix a stack overflow in CSI
+    parsing (corresponding to OpenBSD 6.8 errata 003).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 30 Oct 2020 12:39:34 +0100
+
+tmux (3.1b-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+  * Clarify 3.1~rc1-1 NEWS entry about protocol change (closes: #959698).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 04 May 2020 19:18:57 +0200
+
+tmux (3.1a-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+  * Cherry-pick commit 6a33a12798 from the upcoming 3.1b bugfix release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 02 May 2020 14:37:43 +0200
+
+tmux (3.1-1) unstable; urgency=medium
+
+  * New upstream release (with no code changes compared to RC4).
+  * debian/rules: Remove LDFLAGS settings for --as-needed, no longer
+    required in bullseye.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 26 Apr 2020 21:14:52 +0200
+
+tmux (3.1~rc4-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 12 Apr 2020 19:53:23 +0200
+
+tmux (3.1~rc3-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 23 Mar 2020 19:47:56 +0100
+
+tmux (3.1~rc2-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 15 Mar 2020 18:49:41 +0100
+
+tmux (3.1~rc1-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+  * Bump Standards-Version to 4.5.0.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 11 Feb 2020 21:07:09 +0100
+
+tmux (3.0a-2) unstable; urgency=medium
+
+  * Minor packaging fixes courtesy of the Janitor bot and lintian-brush:
+    + Set debhelper-compat version in Build-Depends.
+    + Update renamed lintian tag names in lintian overrides.
+    + Set upstream metadata fields: Name (from ./configure), Repository,
+      Repository-Browse.
+    + Set upstream metadata fields: Bug-Database.
+  * Switch to debhelper compatibility level 12.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 31 Dec 2019 19:45:11 +0100
+
+tmux (3.0a-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 03 Dec 2019 21:49:28 +0100
+
+tmux (3.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump Standards-Version to 4.4.1.
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 26 Nov 2019 22:35:52 +0100
+
+tmux (3.0~rc5-2) experimental; urgency=medium
+
+  * Add Build-Depends on bison (closes: #943648).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 27 Oct 2019 19:36:11 +0100
+
+tmux (3.0~rc5-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 06 Oct 2019 18:18:36 +0200
+
+tmux (3.0~rc4-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 01 Aug 2019 22:14:18 +0200
+
+tmux (3.0~rc3-1) experimental; urgency=medium
+
+  * New upstream release candidate (from 3.0-rc branch, commit 5a501a8ae2).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 13 Jul 2019 11:57:41 +0200
+
+tmux (2.9a-3) unstable; urgency=medium
+
+  * Cherry-pick commit 26f274011096 from upstream to fix issues with
+    horizontal splits in xterm 348.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 05 Aug 2019 12:50:34 +0200
+
+tmux (2.9a-2) unstable; urgency=medium
+
+  * Cherry-pick commit 38b8a198bac6 from upstream to fix server crash with
+    some layouts.
+  * Bump Standards-Version to 4.4.0.
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 12 Jul 2019 23:10:46 +0200
+
+tmux (2.9a-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 03 May 2019 22:12:30 +0200
+
+tmux (2.9-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 25 Apr 2019 13:25:25 +0200
+
+tmux (2.8-3) unstable; urgency=medium
+
+  * Merge GNU/kFreeBSD changes from James Clarke (via upstream).
+  * Bump Standards-Version to 4.3.0.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 10 Feb 2019 17:14:02 +0100
+
+tmux (2.8-2) unstable; urgency=medium
+
+  * Cherry-pick commit 3a7b9d5735 from upstream to fix handling of PWD
+    when it doesn't match the actual working directory (closes: #914816).
+  * Stop overriding 'package-lacks-versioned-build-depends-on-debhelper 9'.
+  * Bump Standards-Version to 4.2.1.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 01 Dec 2018 22:16:15 +0100
+
+tmux (2.8-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 18 Oct 2018 22:10:02 +0200
+
+tmux (2.7-1) unstable; urgency=medium
+
+  * New upstream release (identical to 8a81993ae1).
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 13 Apr 2018 23:48:11 +0200
+
+tmux (2.7~git20180331-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 8a81993ae1.
+  * Switch to debhelper compatibility level 11.
+  * Bump Standards-Version to 4.1.3.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 31 Mar 2018 21:47:17 +0200
+
+tmux (2.6-3) unstable; urgency=medium
+
+  * Use new URLs on salsa.debian.org for Vcs-* fields.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 31 Dec 2017 15:34:49 +0100
+
+tmux (2.6-2) unstable; urgency=medium
+
+  * debian/docs: Remove FAQ, no longer shipped upstream (closes: #883117).
+  * Bump Standards-Version to 4.1.2.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 31 Dec 2017 13:38:35 +0100
+
+tmux (2.6-1) unstable; urgency=medium
+
+  * New upstream release (with a single fix compared to RC3).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 06 Oct 2017 19:07:13 +0200
+
+tmux (2.6~rc3-1) unstable; urgency=medium
+
+  * New upstream release candidate (closes: #875444).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 11 Sep 2017 19:17:12 +0200
+
+tmux (2.6~rc2-1) unstable; urgency=medium
+
+  * New upstream release candidate.
+  * Bump Standards-Version to 4.1.0.
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 10 Sep 2017 21:33:18 +0200
+
+tmux (2.6~git20170902-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit e941e532fa and roughly
+    equivalent to 2.6-rc1 (closes: #865756).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 02 Sep 2017 10:24:23 +0200
+
+tmux (2.5-3) unstable; urgency=medium
+
+  * Cherry-pick commit 42285ac989 from upstream to try C.UTF-8 in addition
+    to en_US.UTF-8 at startup, and drop dependency on locales added in
+    2.4~git20161101-1 (see #841755).
+  * Bump Standards-Version to 4.0.0.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 08 Jul 2017 16:36:41 +0200
+
+tmux (2.5-2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 18 Jun 2017 10:59:40 +0200
+
+tmux (2.5-1) experimental; urgency=medium
+
+  * New upstream release (no changes compared to RC2).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 30 May 2017 22:24:21 +0200
+
+tmux (2.5~rc2-1) experimental; urgency=medium
+
+  * New upstream release candidate.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 13 May 2017 17:00:34 +0200
+
+tmux (2.4-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 20 Apr 2017 20:03:02 +0200
+
+tmux (2.4~git20170318-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 4eec3270ec.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 18 Mar 2017 12:08:11 +0100
+
+tmux (2.4~git20170311-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 266e662fae.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 11 Mar 2017 18:20:02 +0100
+
+tmux (2.4~git20170226-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 14dc2acc25.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 26 Feb 2017 15:50:55 +0100
+
+tmux (2.4~git20170211-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit c75cced07d.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 11 Feb 2017 17:40:00 +0100
+
+tmux (2.4~git20170115-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 4f077fe62c.
+    + Shell globs are now supported in source-file (closes: #629620).
+  * Explicitly enable utempter support.
+  * Adjust to lintian override rename, add new override for debian/watch
+    signature check (upstream doesn't provide signatures).
+  * Switch Vcs-Git URL to the https one.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 15 Jan 2017 12:28:55 +0100
+
+tmux (2.4~git20161210-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit a64b7cfe5d.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 10 Dec 2016 11:00:03 +0100
+
+tmux (2.4~git20161126-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 2864a31311.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 26 Nov 2016 17:15:56 +0100
+
+tmux (2.4~git20161101-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 5da94182ae.
+  * tmux requires a UTF-8 locale to be used, so add dependency on locales
+    to make this more explicit (closes: #841755).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 01 Nov 2016 16:10:55 +0100
+
+tmux (2.4~git20161023-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 5f9ba2f223.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 23 Oct 2016 17:59:34 +0200
+
+tmux (2.4~git20161016-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 3d8efdf310.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 16 Oct 2016 17:57:08 +0200
+
+tmux (2.3-4) unstable; urgency=medium
+
+  * Cherry pick one additional fix from upstream Git:
+    + c2f88373e7: store the right size in the pipe offset for pipe-pane
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 23 Oct 2016 12:48:32 +0200
+
+tmux (2.3-3) unstable; urgency=medium
+
+  * Cherry-pick fixes from upstream Git:
+    + 4160df4ca4: redraw selection when redrawing whole pane
+    + e0add119ea: do not draw pane status if pane is not visible
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 14 Oct 2016 22:04:41 +0200
+
+tmux (2.3-2) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 30086e504c: remove wrong optimization in screen_write_copy
+    + 44449b305b: don't crash on long prompts in window_copy_write_line
+    + 48dd250af1: handle NULL window or session for user options
+    + 1db6d6fea6: pass file/line to new if-shell commands
+    + b8f2dd8237: fix redraw of pane status lines
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 09 Oct 2016 19:44:35 +0200
+
+tmux (2.3-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 01 Oct 2016 12:00:58 +0200
+
+tmux (2.3~git20160916-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 895f1d93d5.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 16 Sep 2016 19:22:25 +0200
+
+tmux (2.3~git20160903-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 999c1c771b.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 03 Sep 2016 16:16:49 +0200
+
+tmux (2.3~git20160707-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 2d843b5021.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 07 Jul 2016 19:29:50 +0200
+
+tmux (2.3~git20160529-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 7a2fed494b.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 29 May 2016 19:42:51 +0200
+
+tmux (2.3~git20160512-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 6cb74f4b7d (closes: #823527).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 12 May 2016 19:36:29 +0200
+
+tmux (2.3~git20160506-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit fe4e9470bb.
+  * Bump Standards-Version to 3.9.8.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 06 May 2016 17:20:30 +0200
+
+tmux (2.2-3) unstable; urgency=medium
+
+  * Cherry-pick commit 7411f21c5f from upstream to restore the correct
+    libevent configuration (2.2 regression).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 02 Jun 2016 20:09:38 +0200
+
+tmux (2.2-2) unstable; urgency=medium
+
+  * Cherry-pick commit 373b13b240 from upstream to fix window flags with
+    `monitor-activity' enabled (closes: #823527).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 12 May 2016 19:50:13 +0200
+
+tmux (2.2-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 18 Apr 2016 20:18:16 +0200
+
+tmux (2.2~git20160406-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit ad2532c3f4.
+  * Bump Standards-Version to 3.9.7.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 06 Apr 2016 19:34:28 +0200
+
+tmux (2.2~git20160306-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 5fc5c03dad.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 06 Mar 2016 18:58:34 +0100
+
+tmux (2.2~git20160206-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 7669cfb330.
+  * debian/docs: use new merged example configuration file, the examples
+    directory has been removed upstream (closes: #644366, #648867).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 06 Feb 2016 19:10:40 +0100
+
+tmux (2.1-3) unstable; urgency=medium
+
+  * Cherry-pick fixes from upstream Git:
+    + 374e273df5: make paste detection trigger after two characters
+    + 933929cd62: fix a memory leak in if-shell -F
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 21 Nov 2015 19:47:32 +0100
+
+tmux (2.1-2) unstable; urgency=medium
+
+  * Cherry-pick fixes from upstream Git:
+    + 8c8cddbe02: don't cache key table when looking up keys (closes: #803393)
+    + ddbc4a0f6c: add back default binding for mouse wheel up
+    + a05c27a7e1: unzoom before select-pane -LRUD
+    + 2e2b8a95bd: skip mouse sequences when looking for pastes
+    + 3faa51a0ca: pass output from jobs through format_expand() again
+    + 380a1ea8ef: add back bindings to change window with mouse wheel on
+      status line
+    + 640c6fdd5f: pass mouse events to the correct pane
+    + 3fc001d0a2: scroll the correct pane from mouse bindings
+    + 5577535891: pass through right click to the application
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 05 Nov 2015 18:53:44 +0100
+
+tmux (2.1-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 18 Oct 2015 20:06:36 +0200
+
+tmux (2.1~git20151017-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit a204595e4c.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 17 Oct 2015 19:07:51 +0200
+
+tmux (2.1~git20150920-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 983357603a.
+  * Sessions and windows can now be selected exactly with a '=' prefix
+    (closes: #718559).
+  * Adjust Homepage control field and watch file; tmux is now hosted on Github.
+  * Use cgit URL for Vcs-Browser.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 20 Sep 2015 11:22:43 +0200
+
+tmux (2.0-3) unstable; urgency=medium
+
+  * Cherry-pick more fixes from upstream Git:
+    + f60d88cd24: use standout instead of italics for SGR3, like screen does
+      (closes: #756353)
+    + a0cfbf8522: set up client signal handler earlier to avoid zombies
+    + 8c0867fce0: use-after-free in paste/window-copy
+    + 70f783ff56: doc fix for set-titles-string
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 23 May 2015 12:40:52 +0200
+
+tmux (2.0-2) unstable; urgency=medium
+
+  * Cherry-pick 2c53b23d59 from upstream Git to fix missing cursor in Emacs
+    when running in a nested session.
+  * Update lintian-manpage-hyphen.diff against new upstream.
+  * Remove Karl Ferdinand Ebert from Uploaders, with his permission.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 21 May 2015 20:21:33 +0200
+
+tmux (2.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Drop all upstream patches.
+  * Enable libutempter support.
+  * Bump Standards-Version to 3.9.6.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 09 May 2015 18:25:50 +0200
+
+tmux (1.9-6) unstable; urgency=medium
+
+  * Cherry-pick fixes from upstream Git:
+    + 189017c078: memory leak in find-window
+    + 8e4ae12b4d: locking was broken in move to lockf, move back to flock
+    + f117c7d94a: crash if a client is killed while suspended
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 14 Aug 2014 21:31:23 +0200
+
+tmux (1.9-5) unstable; urgency=medium
+
+  * Cherry-pick 8880bdb67c from upstream Git to fix escaping of '#' in
+    status formats (closes: #747133).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 13 May 2014 22:41:09 +0200
+
+tmux (1.9-4) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 030437e33e: server crash due to wrong snprintf() usage
+    + 0d14f81d76: change osdep_get_cwd() logic on Linux to also try sid
+    + 0f0db07c49: incorrect handling of 4-byte UTF-8 sequences
+    + 57f2de093a: use O_TRUNC in save-buffer
+    + 806cc11008: don't leak two fds on subjob fork() failure
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 26 Apr 2014 18:05:47 +0200
+
+tmux (1.9-3) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 0bb9d51965: crash at startup with MALLOC_CHECK_=2
+    + 78e783e786: server crash with swap-pane
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 06 Mar 2014 20:32:38 +0100
+
+tmux (1.9-2) experimental; urgency=low
+
+  * Add urgent fixes from upstream version 1.9a:
+    + 315d45a0eb: crash in last active pane handling
+    + c7f3599ebc: -fg/-bg/-style broken on 256-color terminals
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 23 Feb 2014 00:45:15 +0100
+
+tmux (1.9-1) experimental; urgency=low
+
+  * New upstream release.
+  * Warn about protocol change in debian/NEWS.
+  * Bump Standards-Version to 3.9.5.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 22 Feb 2014 17:49:33 +0100
+
+tmux (1.8-5) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 5532766b19: fix last after movew -r
+    + c103f2fbcb: consistently clear window flags for all sessions
+    + 21bca549d3: consider only visible panes for resize-pane-mouse
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 13 Oct 2013 12:48:38 +0200
+
+tmux (1.8-4) unstable; urgency=low
+
+  * Cherry-pick fixes from upstream Git:
+    + 9fb9f78e43: UTF-8 mangled in send-keys
+    + 965edf8a5c: crash when window in a grouped session is killed
+    + b0b5cad496: memory leak when grouped sessions are destroyed
+    + 27364345bf: avoid processing NULL client formats
+    + 939f796f08: memory leak with repeated formats
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 02 Aug 2013 19:39:29 +0200
+
+tmux (1.8-3) unstable; urgency=low
+
+  * Cherry-pick additional fixes from upstream Git:
+    + 772d61f3ed: reset focus reporting on hard reset
+    + 25c430b1cd: off-by-one buffer overflow in cmd_print()
+    + 88a4da9747: cursor position overflow when reflowing
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 25 May 2013 18:53:11 +0200
+
+tmux (1.8-2) unstable; urgency=low
+
+  * Cherry-pick important fixes from upstream Git:
+    + 9fcda95a6f: hang in if-shell/run-shell
+    + caa8290510: missing client context in source-file
+    + 5dda1abc32: server crash with `remain-on-exit' and focus reporting
+    + 46c7dbef0f: grouped window sizes not properly recalculated
+  * debian/control: Use canonical locations in Vcs-* fields.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 23 Apr 2013 20:19:26 +0200
+
+tmux (1.8-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump Standards-Version to 3.9.4.
+  * With Ferdinand's blessing, set myself as maintainer to better reflect
+    reality.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 26 Mar 2013 22:33:39 +0100
+
+tmux (1.7-3) unstable; urgency=low
+
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 19 Oct 2012 20:06:08 +0200
+
+tmux (1.7-2) experimental; urgency=low
+
+  * Add build-dep on pkg-config for dh-autoreconf.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 13 Oct 2012 15:37:36 +0200
+
+tmux (1.7-1) experimental; urgency=low
+
+  * New upstream release.
+  * Use dh-autoreconf to update upstream's old config.{guess,sub} scripts.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 13 Oct 2012 14:55:38 +0200
+
+tmux (1.7~z20121007-1) experimental; urgency=low
+
+  * New upstream snapshot, from Git commit 43d2b6a648.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 07 Oct 2012 12:43:23 +0200
+
+tmux (1.7~z20120929-1) experimental; urgency=low
+
+  * New upstream snapshot, from Git commit 80b5c0e076.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 29 Sep 2012 16:36:18 +0200
+
+tmux (1.7~svn2867-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2867).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 31 Aug 2012 18:03:41 +0200
+
+tmux (1.7~svn2845-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2845).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 11 Jul 2012 21:57:13 +0200
+
+tmux (1.7~svn2829-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2829).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 24 Jun 2012 21:39:54 +0200
+
+tmux (1.7~svn2819-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2819).
+  * Warn about protocol change in debian/NEWS.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 30 May 2012 19:49:57 +0200
+
+tmux (1.7~svn2788-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2788).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 04 May 2012 18:03:11 +0200
+
+tmux (1.7~svn2773-2) experimental; urgency=low
+
+  * Revert automatic-rename changes from r2773.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 10 Apr 2012 19:14:58 +0200
+
+tmux (1.7~svn2773-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2773).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 10 Apr 2012 18:49:54 +0200
+
+tmux (1.7~svn2760-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2760).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 30 Mar 2012 19:11:50 +0200
+
+tmux (1.7~svn2749-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2749).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 18 Mar 2012 12:42:10 +0100
+
+tmux (1.7~svn2717-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2717).
+  * Quote backslash in examples/screen-keys.conf to avoid syntax error
+    (closes: #662250).
+  * Bump Standards-Version to 3.9.3.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 08 Mar 2012 20:19:30 +0100
+
+tmux (1.7~svn2703-1) experimental; urgency=low
+
+  [ Romain Francoise ]
+  * New upstream snapshot from Subversion (r2703).
+
+  [ Colin Watson ]
+  * Use maintscript support in dh_installdeb rather than writing out
+    dpkg-maintscript-helper commands by hand.  We now simply Pre-Depend on a
+    new enough version of dpkg rather than using 'dpkg-maintscript-helper
+    supports' guards, leading to more predictable behaviour on upgrades
+    (closes: #659794).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 20 Feb 2012 21:15:09 +0100
+
+tmux (1.7~svn2691-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2691).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 31 Jan 2012 20:22:50 +0100
+
+tmux (1.6-2) unstable; urgency=low
+
+  [ Colin Watson ]
+  * Use maintscript support in dh_installdeb rather than writing out
+    dpkg-maintscript-helper commands by hand.  We now simply Pre-Depend on a
+    new enough version of dpkg rather than using 'dpkg-maintscript-helper
+    supports' guards, leading to more predictable behaviour on upgrades
+    (closes: #659794).
+
+  [ Romain Francoise ]
+  * Quote backslash in examples/screen-keys.conf to avoid syntax error
+    (closes: #662250).
+  * Bump Standards-Version to 3.9.3.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 17 Mar 2012 11:42:28 +0100
+
+tmux (1.6-1) unstable; urgency=low
+
+  * New upstream release (closes: #657026).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 23 Jan 2012 19:20:48 +0100
+
+tmux (1.6~svn2670-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2670).
+  * The new window option 'allow-rename' can be used to disable the screen
+    title setting escape sequence (closes: #654882).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 21 Jan 2012 21:38:18 +0100
+
+tmux (1.6~svn2647-2) experimental; urgency=low
+
+  * Disable cwd detection in FreeBSD osdep code to fix FTBFS on kfreebsd.
+  * Refresh, clean up and add DEP-3 headers to patches.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 10 Dec 2011 19:38:48 +0100
+
+tmux (1.6~svn2647-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2647).
+  * The working directory for new processes is now taken from the active
+    window if there is one (closes: #644781).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 09 Dec 2011 20:51:42 +0100
+
+tmux (1.6~svn2642-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2642).
+  * Add -Wl,--as-needed to LDFLAGS to lose extra dependency on libncurses5.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 25 Nov 2011 18:04:01 +0100
+
+tmux (1.6~svn2630-2) experimental; urgency=low
+
+  * Redo build flags handling:
+    + Enable hardening flags via dpkg-buildflags, not hardening-includes.
+    + Switch to debhelper compat level 9 to have build flags exported
+      automatically. This adds back -O2, which had gone missing.
+    + Adjust build-depends accordingly.
+  * Enable parallel build in debhelper.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 03 Nov 2011 22:55:04 +0100
+
+tmux (1.6~svn2630-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2630).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 01 Nov 2011 10:42:03 +0100
+
+tmux (1.6~svn2608-2) experimental; urgency=low
+
+  * Switch to libevent 2.0 and disable the epoll backend (closes: #631984).
+  * Add /usr/bin/tmux to /etc/shells (closes: #644813).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 09 Oct 2011 17:52:50 +0200
+
+tmux (1.6~svn2608-1) experimental; urgency=low
+
+  * New upstream snapshot from Subversion (r2608).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 03 Oct 2011 21:13:21 +0200
+
+tmux (1.5-3) unstable; urgency=low
+
+  * Add /usr/bin/tmux to /etc/shells (closes: #644813).
+  * Switch to libevent 2.0 and disable the epoll backend (closes: #631984).
+  * Redo build flags handling:
+    + Enable hardening flags via dpkg-buildflags, not hardening-includes.
+    + Switch to debhelper compat level 9 to have build flags exported
+      automatically. This adds back -O2, which had gone missing.
+    + Adjust build-depends accordingly.
+  * Enable parallel build in debhelper.
+  * Add -Wl,--as-needed to LDFLAGS to lose extra dependency on libncurses5.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 28 Nov 2011 21:07:12 +0100
+
+tmux (1.5-2) unstable; urgency=low
+
+  * Disable the tmux-cleanup init script on upgrade (the file was removed
+    in 1.4-7).
+  * Fix typo in examples/screen-keys.conf (closes: #635349).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 17 Sep 2011 14:58:54 +0200
+
+tmux (1.5-1) unstable; urgency=low
+
+  [ Karl Ferdinand Ebert ]
+  * New upstream version 1.5 which fixes incorrect result from tmux
+    has-session (Closes: #621138).
+  * Rearrange all patches:
+    - Remove 08_layout_set.diff (applied upstream).
+    - Remove 09_fix_gnome_terminal_keycodes (included in upstream).
+    - Remove 99_upstream.diff (no difference now).
+    - New configure scripts forces to set install_prefix and support for HURD
+      and kFreeBSD else where.
+    - Refresh 07_fix_hyphen.diff and update series.
+
+  [ Romain Francoise ]
+  * debian/rules: Don't override dh_auto_clean.
+  * Remove debian/patches/01_install_prefix.diff.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 10 Jul 2011 13:10:23 +0200
+
+tmux (1.4-9) unstable; urgency=low
+
+  [ Dustin Kirkland ]
+  * debian/patches/09_fix_gnome_terminal_keycodes.diff:
+    - enable tmux handling of gnome-terminal's shift/ctrl/alt + F1-F4
+    - patch submitted and accepted upstream
+
+  [ Karl Ferdinand Ebert ]
+  * Bump standard version to 3.9.2 (no changes).
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sat, 25 Jun 2011 11:47:11 +0200
+
+tmux (1.4-8) unstable; urgency=low
+
+  * Fix "tmux segfaults with [lost server] if second pane is closed
+    after third pane has been broke out" by patch 99_upstream.diff
+    (Closes: #622677).
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Tue, 10 May 2011 23:39:17 +0200
+
+tmux (1.4-7) unstable; urgency=low
+
+  [ Karl Ferdinand Ebert ]
+  * Drop Debian-specific socket handling changes:
+    + debian/patches/03_proper_socket_handling.diff,
+      debian/patches/04_dropping_unnecessary_privileges.diff: Dropped.
+    + debian/{init,tmux.lintian-overrides}: Removed, no longer necessary.
+    + debian/rules: Remove dh_installinit and dh_fixperms invocations.
+
+  [ Romain Francoise ]
+  * debian/control: Remove reference to /var/run as socket location.
+  * debian/copyright: Remove references to screen init script.
+  * debian/{preinst,postinst,postrm}: Deal with disappearance of the
+    /etc/init.d/tmux-cleanup script.
+  * debian/NEWS: Mention socket handling changes.
+  * Drop disabled patch debian/patches/06_hardening_write_return.diff.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 16 Apr 2011 19:41:04 +0200
+
+tmux (1.4-6) unstable; urgency=high
+
+  * Fix "Incorrect dropping of privileges allows users to obtain utmp
+    group privileges" by adjusting patch 04_drop_unnecessary_privileges.diff
+    to drop privileges at the caller side (Closes: #620304).
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sun, 03 Apr 2011 18:28:42 +0200
+
+tmux (1.4-5) unstable; urgency=low
+
+  * Fix "tmux segfaults with [lost server] if two panes are closed with
+    tiled layout" by patch 08_layout_set.diff (Closes: #616641).
+  * Update debian/copyright with regard to dropped upstream patches.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sun, 06 Mar 2011 22:02:46 +0100
+
+tmux (1.4-4) unstable; urgency=low
+
+  * Drop build-conflicts against libevent-dev (>> 2.0).
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 16 Feb 2011 20:35:31 +0100
+
+tmux (1.4-3) experimental; urgency=low
+
+  * Move back to epoll on Linux until libevent's poll backend gets fixed
+    (see #609444).
+  * Add build-conflicts on libevent 2.0 for the time being, Debian's
+    version is too old.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 13 Jan 2011 21:39:15 +0100
+
+tmux (1.4-2) experimental; urgency=low
+
+  * Cherry-pick upstream fix disabling epoll support in libevent to avoid
+    server hangs.
+  * Define PATH_MAX if it's missing to fix FTBFS on GNU/Hurd, thanks to
+    Justus Winter (closes: #609333).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 08 Jan 2011 23:41:00 +0100
+
+tmux (1.4-1) experimental; urgency=low
+
+  * New upstream version; windows are no longer inappropriately set as
+    hidden when sizes are recalculated (closes: #575193).
+  * Drop debian/patches/99_upstream.diff.
+  * debian/control: use versioned build-dependency on libevent-dev.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 28 Dec 2010 12:25:29 +0100
+
+tmux (1.3-2) unstable; urgency=low
+
+  [ Karl Ferdinand Ebert ]
+  * Fix "/usr/bin/tmux: tmux crashes on attach-session" by deactivating
+    06_hardening_write_return.diff patch (Closes: #603542)
+  * Fix FTBFS on hurd-i386, MAXHOSTNAMELEN isn't defined there.
+  * Bump to standard version 3.9.1 (no changes needed).
+
+  [ Romain Francoise ]
+  * Combine upstream patches in a single 99_upstream.diff file.
+  * Fix reference to /tmp as socket directory in the man page; we use
+    /var/run/tmux.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Tue, 16 Nov 2010 22:29:30 +0100
+
+tmux (1.3-1) unstable; urgency=low
+
+  * New upstream version, fixes "tmux does not refresh console" (Closes:
+    #575193).
+  * Drop cherry-picked patches from upstream: 08_avoid_double_free.diff,
+    09_show_dead_windows.diff and 11_fix_crash_multiple_commands.diff.
+  * Include cherry-picked patches from upstream: 13_server-client.c.diff,
+    14_server-window.c.diff and 15_window-copy.c.diff.
+  * Refresh rest of patches.
+  * Update debian/copyright.
+  * Bump to standard version 3.9.0, no changes needed.
+  * Document server protocol change in NEWS.Debian.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Fri, 23 Jul 2010 08:09:03 +0200
+
+tmux (1.2-4) unstable; urgency=low
+
+  * Add patch 11_fix_crash_multiple_commands.diff from upstream CVS.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Wed, 05 May 2010 12:53:51 +0200
+
+tmux (1.2-3) unstable; urgency=low
+
+  * Drop 10_no_zombies.diff, it causes a regression far worse than the bug
+    it fixes (closes: #579353).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 27 Apr 2010 18:57:03 +0200
+
+tmux (1.2-2) unstable; urgency=low
+
+  * Make Homepage point to the website, not the SF project page.
+  * Add patches 09_show_dead_windows.diff and 10_no_zombies.diff, both
+    cherry-picked from upstream CVS.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 25 Apr 2010 15:59:14 +0200
+
+tmux (1.2-1) unstable; urgency=low
+
+  [ Karl Ferdinand Ebert ]
+  * New upstream release, fixes "cannot find opposite of break-window"
+    (Closes: #573616, #575989)
+  * New build-depend on libevent-dev as upstream needs this now.
+  * Bump to standard version 3.8.4 (no changes needed), adopted new source
+    format and switched parts of debian/rules to dh_auto_*.
+  * Add year 2010 to debian/copyright.
+  * Refreshed patch 06_hardening_write_return.diff with help from Micah Cowan.
+  * Add hardening-wrapper to build-depends (Closes: #576157)
+
+  [ Romain Francoise ]
+  * Add myself to Uploaders.
+  * Add Vcs-Browser and Vcs-Git fields in debian/control.
+  * Use hardening-includes rather than hardening-wrapper.
+  * Simplify debian/rules further using dh(1).
+  * Bump debhelper build-depends to >= 7.0.50~ for dh overrides.
+  * Add debian/patches/08_avoid_double_free.diff.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 14 Apr 2010 21:50:36 +0200
+
+tmux (1.1-1) unstable; urgency=low
+
+  [ Karl Ferdinand Ebert ]
+  * New upstream release fixes "tmux does not support screen-256color like
+    it claims". Thanks very much Tim Allen for pointing this out.
+    (Closes: #550701).
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Fri, 06 Nov 2009 17:03:29 +0100
+
+tmux (1.0-1) unstable; urgency=low
+
+  * New upstream release
+  	+ fixes "add a setenv command like in Screen" (Closes: #531151)
+  	+ and "Omit tmux-generated line-wrapping newlines from paste buffer"
+    (Closes: #531497)
+  * Fix lintian info with 07_fix_hyphen.diff.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Thu, 24 Sep 2009 09:52:15 +0200
+
+tmux (0.9-2) unstable; urgency=low
+
+  * Fixing FTBFS for kfreebsd and hurd with 05_build_kfreebsd_hurd.dpatch
+  * with DEB_BUILD_HARDENING=1 detected minor unchecked return values, fixed
+    with 06_hardening_write_return.dpatch
+  * added README.source from azureus package to satisfy lintian
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Wed, 26 Aug 2009 18:43:47 +0200
+
+tmux (0.9-1) unstable; urgency=low
+
+  * New upstream release (Closes: #536087)
+  * better handling of UTF8, therefore dropping hint in README.Debian
+  * Dropping patch 01_fix_wring_location (applied upstream)
+  * Modified patches 02_fix_wring_location and
+    03_proper_socket_handling to fit in.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Tue, 07 Jul 2009 17:05:31 +0200
+
+tmux (0.8-5) unstable; urgency=low
+
+  * Fix "Bad sockethandling" sockets are now created in /var/run/tmux with
+    sgid flag and utmp group. Modified program drops these privileges
+    immediately. (Closes: #529082)
+  * contains now a README.Debian as a hint for UTF-8
+  * using dpatch system and a clean debian/rules
+  * mentioned scripts from screen in debian/copyright which cover now an
+    init-script that cleans /var/run/tmux after reboot
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sun, 17 May 2009 21:24:02 +0200
+
+tmux (0.8-4) unstable; urgency=low
+
+  * included statement towards BSD-2,BSD-3 in debian/copyright
+  * filed a bugreport (Closes: #519339: ITP: tmux -- an alternative to
+    screen, licensed under BSD)
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sun, 26 Apr 2009 08:12:03 +0200
+
+tmux (0.8-3) unstable; urgency=low
+
+  * corrected debian/copyright file
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sat, 25 Apr 2009 19:40:55 +0200
+
+tmux (0.8-2) unstable; urgency=low
+
+  * changed debian/rules
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Sat, 25 Apr 2009 17:04:33 +0200
+
+tmux (0.8-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Fri, 24 Apr 2009 16:33:16 +0200
+
+tmux (0.7-3) unstable; urgency=low
+
+  * extended documentation and long description
+  * mentioned BSD license in debian/copyright
+  * manpage is now free of hyphen
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Thu, 12 Mar 2009 09:17:30 +0100
+
+tmux (0.7-2) unstable; urgency=low
+
+  * corrected changelog's first entry with useful bug number.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Thu, 12 Mar 2009 00:01:18 +0100
+
+tmux (0.7-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Wed, 11 Mar 2009 19:40:26 +0100
+
+tmux (0.5-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Tue, 16 Dec 2008 10:16:40 +0100
+
+tmux (0.4a-3) unstable; urgency=low
+
+  * Fixed Upstream-Maintainer in debian/copyright
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Wed, 24 Sep 2008 10:53:16 +0200
+
+tmux (0.4a-2) unstable; urgency=low
+
+  * debian/copyright in appropriate format
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Tue, 16 Sep 2008 08:28:17 +0200
+
+tmux (0.4a-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Mon, 15 Sep 2008 18:46:54 +0200
+
+tmux (0.4-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Fri, 29 Aug 2008 12:01:45 +0200
+
+tmux (0.2-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Karl Ferdinand Ebert <kfebert@gmail.com>  Mon, 02 Jun 2008 21:17:30 +0200

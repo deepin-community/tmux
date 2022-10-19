@@ -1,0 +1,55 @@
+Description: Platform-specific fixes
+ * Define MAXPATHLEN, PATH_MAX, MAXHOSTNAMELEN, MAX_IOV for Hurd.
+ * Add workaround for broken GNU/kFreeBSD system headers.
+Author: Karl Ferdinand Ebert <kfebert@gmail.com>
+Author: Romain Francoise <rfrancoise@debian.org>
+Author: James Clarke <jrtc27@debian.org>
+Bug-Debian: http://bugs.debian.org/609333
+Forwarded: not-needed
+
+--- a/compat.h
++++ b/compat.h
+@@ -21,6 +21,20 @@
+ #include <sys/ioctl.h>
+ #include <sys/uio.h>
+ 
++/*
++ * Shouldn't be needed, but GNU/kFreeBSD headers are currently slightly broken.
++ * The glibc limits.h eventually includes the FreeBSD limits-related headers,
++ * which don't define a TTY_NAME_MAX. However, anything (in)directly including
++ * the glibc sys/param.h will include the glibc bits/param.h, which defines
++ * TTY_NAME_MAX as SPECNAMELEN, i.e. 63, which differs from our fallback of 32.
++ * Thus, without this hack, different source files can (and do) end up with
++ * different values for TTY_NAME_MAX, which among other things affects the
++ * layout of struct window_pane due to the tty buffer.
++ */
++#ifdef __FreeBSD_kernel__
++#include <sys/param.h>
++#endif
++
+ #include <fnmatch.h>
+ #include <limits.h>
+ #include <stdio.h>
+@@ -289,6 +303,22 @@
+ int		 getdtablecount(void);
+ #endif
+ 
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
++
++#ifndef PATH_MAX
++#define PATH_MAX 4096
++#endif
++
++#ifndef MAXHOSTNAMELEN
++#define MAXHOSTNAMELEN 64
++#endif
++
++#ifndef IOV_MAX
++#define IOV_MAX	1024
++#endif
++
+ #ifndef HAVE_CLOSEFROM
+ /* closefrom.c */
+ void		 closefrom(int);
