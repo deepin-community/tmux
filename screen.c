@@ -80,12 +80,21 @@ screen_init(struct screen *s, u_int sx, u_int sy, u_int hlimit)
 	s->titles = NULL;
 	s->path = NULL;
 
-	s->cstyle = 0;
-	s->ccolour = xstrdup("");
+	s->cstyle = SCREEN_CURSOR_DEFAULT;
+	s->default_cstyle = SCREEN_CURSOR_DEFAULT;
+	s->mode = MODE_CURSOR;
+	s->default_mode = 0;
+	s->ccolour = -1;
+	s->default_ccolour = -1;
 	s->tabs = NULL;
 	s->sel = NULL;
 
+#ifdef ENABLE_SIXEL
+	TAILQ_INIT(&s->images);
+#endif
+
 	s->write_list = NULL;
+	s->hyperlinks = NULL;
 
 	screen_reinit(s);
 }
@@ -100,7 +109,7 @@ screen_reinit(struct screen *s)
 	s->rupper = 0;
 	s->rlower = screen_size_y(s) - 1;
 
-	s->mode = MODE_CURSOR|MODE_WRAP;
+	s->mode = MODE_CURSOR|MODE_WRAP|(s->mode & MODE_CRLF);
 	if (options_get_number(global_options, "extended-keys") == 2)
 		s->mode |= MODE_KEXTENDED;
 
@@ -115,6 +124,22 @@ screen_reinit(struct screen *s)
 
 	screen_clear_selection(s);
 	screen_free_titles(s);
+
+#ifdef ENABLE_SIXEL
+	image_free_all(s);
+#endif
+
+	screen_reset_hyperlinks(s);
+}
+
+/* Reset hyperlinks of a screen. */
+void
+screen_reset_hyperlinks(struct screen *s)
+{
+	if (s->hyperlinks == NULL)
+		s->hyperlinks = hyperlinks_init();
+	else
+		hyperlinks_reset(s->hyperlinks);
 }
 
 /* Destroy a screen. */
@@ -125,7 +150,6 @@ screen_free(struct screen *s)
 	free(s->tabs);
 	free(s->path);
 	free(s->title);
-	free(s->ccolour);
 
 	if (s->write_list != NULL)
 		screen_write_free_list(s);
@@ -134,7 +158,13 @@ screen_free(struct screen *s)
 		grid_destroy(s->saved_grid);
 	grid_destroy(s->grid);
 
+	if (s->hyperlinks != NULL)
+		hyperlinks_free(s->hyperlinks);
 	screen_free_titles(s);
+
+#ifdef ENABLE_SIXEL
+	image_free_all(s);
+#endif
 }
 
 /* Reset tabs to default, eight spaces apart. */
@@ -151,22 +181,47 @@ screen_reset_tabs(struct screen *s)
 		bit_set(s->tabs, i);
 }
 
-/* Set screen cursor style. */
+/* Set screen cursor style and mode. */
 void
-screen_set_cursor_style(struct screen *s, u_int style)
+screen_set_cursor_style(u_int style, enum screen_cursor_style *cstyle,
+    int *mode)
 {
-	if (style <= 6) {
-		s->cstyle = style;
-		s->mode &= ~MODE_BLINKING;
+	switch (style) {
+	case 0:
+		*cstyle = SCREEN_CURSOR_DEFAULT;
+		break;
+	case 1:
+		*cstyle = SCREEN_CURSOR_BLOCK;
+		*mode |= MODE_CURSOR_BLINKING;
+		break;
+	case 2:
+		*cstyle = SCREEN_CURSOR_BLOCK;
+		*mode &= ~MODE_CURSOR_BLINKING;
+		break;
+	case 3:
+		*cstyle = SCREEN_CURSOR_UNDERLINE;
+		*mode |= MODE_CURSOR_BLINKING;
+		break;
+	case 4:
+		*cstyle = SCREEN_CURSOR_UNDERLINE;
+		*mode &= ~MODE_CURSOR_BLINKING;
+		break;
+	case 5:
+		*cstyle = SCREEN_CURSOR_BAR;
+		*mode |= MODE_CURSOR_BLINKING;
+		break;
+	case 6:
+		*cstyle = SCREEN_CURSOR_BAR;
+		*mode &= ~MODE_CURSOR_BLINKING;
+		break;
 	}
 }
 
 /* Set screen cursor colour. */
 void
-screen_set_cursor_colour(struct screen *s, const char *colour)
+screen_set_cursor_colour(struct screen *s, int colour)
 {
-	free(s->ccolour);
-	s->ccolour = xstrdup(colour);
+	s->ccolour = colour;
 }
 
 /* Set screen title. */
@@ -253,8 +308,12 @@ screen_resize_cursor(struct screen *s, u_int sx, u_int sy, int reflow,
 	if (sy != screen_size_y(s))
 		screen_resize_y(s, sy, eat_empty, &cy);
 
-	if (reflow)
+	if (reflow) {
+#ifdef ENABLE_SIXEL
+		image_free_all(s);
+#endif
 		screen_reflow(s, sx, &cx, &cy, cursor);
+	}
 
 	if (cy >= s->grid->hsize) {
 		s->cx = cx;
@@ -584,7 +643,7 @@ screen_alternate_off(struct screen *s, struct grid_cell *gc, int cursor)
 	 * before copying back.
 	 */
 	if (s->saved_grid != NULL)
-		screen_resize(s, s->saved_grid->sx, s->saved_grid->sy, 1);
+		screen_resize(s, s->saved_grid->sx, s->saved_grid->sy, 0);
 
 	/*
 	 * Restore the cursor position and cell. This happens even if not
@@ -625,4 +684,54 @@ screen_alternate_off(struct screen *s, struct grid_cell *gc, int cursor)
 		s->cx = screen_size_x(s) - 1;
 	if (s->cy > screen_size_y(s) - 1)
 		s->cy = screen_size_y(s) - 1;
+}
+
+/* Get mode as a string. */
+const char *
+screen_mode_to_string(int mode)
+{
+	static char	tmp[1024];
+
+	if (mode == 0)
+		return ("NONE");
+	if (mode == ALL_MODES)
+		return ("ALL");
+
+	*tmp = '\0';
+	if (mode & MODE_CURSOR)
+		strlcat(tmp, "CURSOR,", sizeof tmp);
+	if (mode & MODE_INSERT)
+		strlcat(tmp, "INSERT,", sizeof tmp);
+	if (mode & MODE_KCURSOR)
+		strlcat(tmp, "KCURSOR,", sizeof tmp);
+	if (mode & MODE_KKEYPAD)
+		strlcat(tmp, "KKEYPAD,", sizeof tmp);
+	if (mode & MODE_WRAP)
+		strlcat(tmp, "WRAP,", sizeof tmp);
+	if (mode & MODE_MOUSE_STANDARD)
+		strlcat(tmp, "MOUSE_STANDARD,", sizeof tmp);
+	if (mode & MODE_MOUSE_BUTTON)
+		strlcat(tmp, "MOUSE_BUTTON,", sizeof tmp);
+	if (mode & MODE_CURSOR_BLINKING)
+		strlcat(tmp, "CURSOR_BLINKING,", sizeof tmp);
+	if (mode & MODE_CURSOR_VERY_VISIBLE)
+		strlcat(tmp, "CURSOR_VERY_VISIBLE,", sizeof tmp);
+	if (mode & MODE_MOUSE_UTF8)
+		strlcat(tmp, "MOUSE_UTF8,", sizeof tmp);
+	if (mode & MODE_MOUSE_SGR)
+		strlcat(tmp, "MOUSE_SGR,", sizeof tmp);
+	if (mode & MODE_BRACKETPASTE)
+		strlcat(tmp, "BRACKETPASTE,", sizeof tmp);
+	if (mode & MODE_FOCUSON)
+		strlcat(tmp, "FOCUSON,", sizeof tmp);
+	if (mode & MODE_MOUSE_ALL)
+		strlcat(tmp, "MOUSE_ALL,", sizeof tmp);
+	if (mode & MODE_ORIGIN)
+		strlcat(tmp, "ORIGIN,", sizeof tmp);
+	if (mode & MODE_CRLF)
+		strlcat(tmp, "CRLF,", sizeof tmp);
+	if (mode & MODE_KEXTENDED)
+		strlcat(tmp, "KEXTENDED,", sizeof tmp);
+	tmp[strlen(tmp) - 1] = '\0';
+	return (tmp);
 }

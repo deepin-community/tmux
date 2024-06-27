@@ -4,13 +4,14 @@ Priority: optional
 Maintainer: Romain Francoise <rfrancoise@debian.org>
 Build-Depends: bison,
                debhelper-compat (= 13),
+               debianutils (>= 5.3-1~),
                dpkg-dev (>= 1.16.1~),
                libevent-dev (>> 2.0.10),
-               libncurses5-dev,
+               libncurses-dev (>> 6.5),
+               libsystemd-dev [linux-any],
                libutempter-dev,
-               libutil-freebsd-dev [kfreebsd-any],
-               pkg-config
-Standards-Version: 4.6.0
+               pkgconf
+Standards-Version: 4.7.0
 Rules-Requires-Root: no
 Homepage: https://tmux.github.io/
 Vcs-Browser: https://salsa.debian.org/rfrancoise/tmux

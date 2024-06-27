@@ -243,9 +243,7 @@ client_main(struct event_base *base, int argc, char **argv, uint64_t flags,
 	ssize_t			 linelen;
 	char			*line = NULL, **caps = NULL, *cause;
 	u_int			 ncaps = 0;
-
-	/* Ignore SIGCHLD now or daemon() in the server will leave a zombie. */
-	signal(SIGCHLD, SIG_IGN);
+	struct args_value	*values;
 
 	/* Set up the initial command. */
 	if (shell_command != NULL) {
@@ -258,17 +256,20 @@ client_main(struct event_base *base, int argc, char **argv, uint64_t flags,
 		msg = MSG_COMMAND;
 
 		/*
-		 * It sucks parsing the command string twice (in client and
-		 * later in server) but it is necessary to get the start server
-		 * flag.
+		 * It's annoying parsing the command string twice (in client
+		 * and later in server) but it is necessary to get the start
+		 * server flag.
 		 */
-		pr = cmd_parse_from_arguments(argc, argv, NULL);
+		values = args_from_vector(argc, argv);
+		pr = cmd_parse_from_arguments(values, argc, NULL);
 		if (pr->status == CMD_PARSE_SUCCESS) {
 			if (cmd_list_any_have(pr->cmdlist, CMD_STARTSERVER))
 				flags |= CLIENT_STARTSERVER;
 			cmd_list_free(pr->cmdlist);
 		} else
 			free(pr->error);
+		args_free_values(values, argc);
+		free(values);
 	}
 
 	/* Create client process structure (starts logging). */
@@ -280,6 +281,12 @@ client_main(struct event_base *base, int argc, char **argv, uint64_t flags,
 	log_debug("flags are %#llx", (unsigned long long)client_flags);
 
 	/* Initialize the client socket and start the server. */
+#ifdef HAVE_SYSTEMD
+	if (systemd_activated()) {
+		/* socket-based activation, do not even try to be a client. */
+		fd = server_start(client_proc, flags, base, 0, NULL);
+	} else
+#endif
 	fd = client_connect(base, socket_path, client_flags);
 	if (fd == -1) {
 		if (errno == ECONNREFUSED) {
@@ -357,6 +364,7 @@ client_main(struct event_base *base, int argc, char **argv, uint64_t flags,
 	/* Send identify messages. */
 	client_send_identify(ttynam, termname, caps, ncaps, cwd, feat);
 	tty_term_free_list(caps, ncaps);
+	proc_flush_peer(client_peer);
 
 	/* Send first command. */
 	if (msg == MSG_COMMAND) {
@@ -522,12 +530,23 @@ client_signal(int sig)
 {
 	struct sigaction sigact;
 	int		 status;
+	pid_t		 pid;
 
 	log_debug("%s: %s", __func__, strsignal(sig));
-	if (sig == SIGCHLD)
-		waitpid(WAIT_ANY, &status, WNOHANG);
-	else if (!client_attached) {
-		if (sig == SIGTERM)
+	if (sig == SIGCHLD) {
+		for (;;) {
+			pid = waitpid(WAIT_ANY, &status, WNOHANG);
+			if (pid == 0)
+				break;
+			if (pid == -1) {
+				if (errno == ECHILD)
+					break;
+				log_debug("waitpid failed: %s",
+				    strerror(errno));
+			}
+		}
+	} else if (!client_attached) {
+		if (sig == SIGTERM || sig == SIGHUP)
 			proc_exit(client_proc);
 	} else {
 		switch (sig) {
@@ -688,6 +707,9 @@ client_dispatch_wait(struct imsg *imsg)
 		file_read_open(&client_files, client_peer, imsg, 1,
 		    !(client_flags & CLIENT_CONTROL), client_file_check_cb,
 		    NULL);
+		break;
+	case MSG_READ_CANCEL:
+		file_read_cancel(&client_files, imsg);
 		break;
 	case MSG_WRITE_OPEN:
 		file_write_open(&client_files, client_peer, imsg, 1,

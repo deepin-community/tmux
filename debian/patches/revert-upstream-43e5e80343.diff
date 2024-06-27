@@ -1,0 +1,79 @@
+commit 0f5e175cc8df8c047348c06cbc48f664682b58a3
+Author: Romain Francoise <rfrancoise@debian.org>
+Date:   Thu May 9 17:19:43 2024 +0200
+Forwarded: not-needed
+
+    Revert "Skip wrapped lines in top level search loop because they will be"
+    
+    This reverts commit 43e5e80343185e69a1b864fc48095ede0b898180.
+
+diff --git a/window-copy.c b/window-copy.c
+index a1f18476ad..e5bd3ec10c 100644
+--- a/window-copy.c
++++ b/window-copy.c
+@@ -295,7 +295,6 @@ struct window_copy_mode_data {
+ 	int		 timeout;	/* search has timed out */
+ #define WINDOW_COPY_SEARCH_TIMEOUT 10000
+ #define WINDOW_COPY_SEARCH_ALL_TIMEOUT 200
+-#define WINDOW_COPY_SEARCH_MAX_LINE 2000
+ 
+ 	int			 jumptype;
+ 	struct utf8_data	*jumpchar;
+@@ -3214,9 +3213,7 @@ window_copy_search_lr_regex(struct grid *gd, u_int *ppx, u_int *psx, u_int py,
+ 	len = gd->sx - first;
+ 	endline = gd->hsize + gd->sy - 1;
+ 	pywrap = py;
+-	while (buf != NULL &&
+-	    pywrap <= endline &&
+-	    len < WINDOW_COPY_SEARCH_MAX_LINE) {
++	while (buf != NULL && pywrap <= endline) {
+ 		gl = grid_get_line(gd, pywrap);
+ 		if (~gl->flags & GRID_LINE_WRAPPED)
+ 			break;
+@@ -3273,9 +3270,7 @@ window_copy_search_rl_regex(struct grid *gd, u_int *ppx, u_int *psx, u_int py,
+ 	len = gd->sx - first;
+ 	endline = gd->hsize + gd->sy - 1;
+ 	pywrap = py;
+-	while (buf != NULL &&
+-	    pywrap <= endline &&
+-	    len < WINDOW_COPY_SEARCH_MAX_LINE) {
++	while (buf != NULL && (pywrap <= endline)) {
+ 		gl = grid_get_line(gd, pywrap);
+ 		if (~gl->flags & GRID_LINE_WRAPPED)
+ 			break;
+@@ -3614,11 +3609,10 @@ window_copy_search_jump(struct window_mode_entry *wme, struct grid *gd,
+     struct grid *sgd, u_int fx, u_int fy, u_int endline, int cis, int wrap,
+     int direction, int regex)
+ {
+-	u_int			 i, px, sx, ssize = 1;
+-	int			 found = 0, cflags = REG_EXTENDED;
+-	char			*sbuf;
+-	regex_t			 reg;
+-	struct grid_line	*gl;
++	u_int	 i, px, sx, ssize = 1;
++	int	 found = 0, cflags = REG_EXTENDED;
++	char	*sbuf;
++	regex_t	 reg;
+ 
+ 	if (regex) {
+ 		sbuf = xmalloc(ssize);
+@@ -3635,9 +3629,6 @@ window_copy_search_jump(struct window_mode_entry *wme, struct grid *gd,
+ 
+ 	if (direction) {
+ 		for (i = fy; i <= endline; i++) {
+-			gl = grid_get_line(gd, i);
+-			if (i != endline && gl->flags & GRID_LINE_WRAPPED)
+-				continue;
+ 			if (regex) {
+ 				found = window_copy_search_lr_regex(gd,
+ 				    &px, &sx, i, fx, gd->sx, &reg);
+@@ -3651,9 +3642,6 @@ window_copy_search_jump(struct window_mode_entry *wme, struct grid *gd,
+ 		}
+ 	} else {
+ 		for (i = fy + 1; endline < i; i--) {
+-			gl = grid_get_line(gd, i - 1);
+-			if (i != endline && gl->flags & GRID_LINE_WRAPPED)
+-				continue;
+ 			if (regex) {
+ 				found = window_copy_search_rl_regex(gd,
+ 				    &px, &sx, i - 1, 0, fx + 1, &reg);

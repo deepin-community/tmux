@@ -1,0 +1,130 @@
+commit 6c0067c10360880334afa50815b880d04edcbf42
+Author: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date:   Thu Mar 21 11:30:42 2024 +0000
+Forwarded: not-needed
+
+    Do not notify window-layout-changed if the window is about to be
+    destroyed (since it may have been freed by the time the notify happens),
+    from Romain Francoise in GitHub issue 3860.
+
+Origin: upstream, https://github.com/tmux/tmux/commit/6c0067c10360880334afa50815b880d04edcbf42
+
+diff --git a/cmd-display-panes.c b/cmd-display-panes.c
+index 06f6dc277a..25556f3d58 100644
+--- a/cmd-display-panes.c
++++ b/cmd-display-panes.c
+@@ -246,7 +246,7 @@ cmd_display_panes_key(struct client *c, void *data, struct key_event *event)
+ 	wp = window_pane_at_index(w, index);
+ 	if (wp == NULL)
+ 		return (1);
+-	window_unzoom(w);
++	window_unzoom(w, 1);
+ 
+ 	xasprintf(&expanded, "%%%u", wp->id);
+ 
+diff --git a/cmd-resize-pane.c b/cmd-resize-pane.c
+index c9439441f6..b2c167f59f 100644
+--- a/cmd-resize-pane.c
++++ b/cmd-resize-pane.c
+@@ -87,7 +87,7 @@ cmd_resize_pane_exec(struct cmd *self, struct cmdq_item *item)
+ 
+ 	if (args_has(args, 'Z')) {
+ 		if (w->flags & WINDOW_ZOOMED)
+-			window_unzoom(w);
++			window_unzoom(w, 1);
+ 		else
+ 			window_zoom(wp);
+ 		server_redraw_window(w);
+diff --git a/popup.c b/popup.c
+index 38a4c17fdf..804dd6ef07 100644
+--- a/popup.c
++++ b/popup.c
+@@ -346,7 +346,7 @@ popup_make_pane(struct popup_data *pd, enum layout_type type)
+ 	u_int			 hlimit;
+ 	const char		*shell;
+ 
+-	window_unzoom(w);
++	window_unzoom(w, 1);
+ 
+ 	lc = layout_split_pane(wp, type, -1, 0);
+ 	hlimit = options_get_number(s->options, "history-limit");
+diff --git a/resize.c b/resize.c
+index 457fee0a7b..dff9571270 100644
+--- a/resize.c
++++ b/resize.c
+@@ -40,7 +40,7 @@ resize_window(struct window *w, u_int sx, u_int sy, int xpixel, int ypixel)
+ 	/* If the window is zoomed, unzoom. */
+ 	zoomed = w->flags & WINDOW_ZOOMED;
+ 	if (zoomed)
+-		window_unzoom(w);
++		window_unzoom(w, 1);
+ 
+ 	/* Resize the layout first. */
+ 	layout_resize(w, sx, sy);
+diff --git a/server-fn.c b/server-fn.c
+index 8d66bce913..052169568f 100644
+--- a/server-fn.c
++++ b/server-fn.c
+@@ -487,6 +487,6 @@ server_check_unattached(void)
+ void
+ server_unzoom_window(struct window *w)
+ {
+-	if (window_unzoom(w) == 0)
++	if (window_unzoom(w, 1) == 0)
+ 		server_redraw_window(w);
+ }
+diff --git a/tmux.h b/tmux.h
+index e6516a7251..f61d1032eb 100644
+--- a/tmux.h
++++ b/tmux.h
+@@ -3021,7 +3021,7 @@ struct window_pane *window_add_pane(struct window *, struct window_pane *,
+ void		 window_resize(struct window *, u_int, u_int, int, int);
+ void		 window_pane_send_resize(struct window_pane *, u_int, u_int);
+ int		 window_zoom(struct window_pane *);
+-int		 window_unzoom(struct window *);
++int		 window_unzoom(struct window *, int);
+ int		 window_push_zoom(struct window *, int, int);
+ int		 window_pop_zoom(struct window *);
+ void		 window_lost_pane(struct window *, struct window_pane *);
+diff --git a/window.c b/window.c
+index c5d00e29fe..43c272bc8e 100644
+--- a/window.c
++++ b/window.c
+@@ -340,7 +340,7 @@ window_destroy(struct window *w)
+ {
+ 	log_debug("window @%u destroyed (%d references)", w->id, w->references);
+ 
+-	window_unzoom(w);
++	window_unzoom(w, 0);
+ 	RB_REMOVE(windows, &windows, w);
+ 
+ 	if (w->layout_root != NULL)
+@@ -666,7 +666,7 @@ window_zoom(struct window_pane *wp)
+ }
+ 
+ int
+-window_unzoom(struct window *w)
++window_unzoom(struct window *w, int notify)
+ {
+ 	struct window_pane	*wp;
+ 
+@@ -683,7 +683,9 @@ window_unzoom(struct window *w)
+ 		wp->saved_layout_cell = NULL;
+ 	}
+ 	layout_fix_panes(w, NULL);
+-	notify_window("window-layout-changed", w);
++
++	if (notify)
++		notify_window("window-layout-changed", w);
+ 
+ 	return (0);
+ }
+@@ -697,7 +699,7 @@ window_push_zoom(struct window *w, int always, int flag)
+ 		w->flags |= WINDOW_WASZOOMED;
+ 	else
+ 		w->flags &= ~WINDOW_WASZOOMED;
+-	return (window_unzoom(w) == 0);
++	return (window_unzoom(w, 1) == 0);
+ }
+ 
+ int

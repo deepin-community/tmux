@@ -1,0 +1,23 @@
+commit 424f13fe13036e75b1c80e7751b81529f4cd8e15
+Author: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date:   Wed Apr 10 07:15:21 2024 +0000
+Forwarded: not-needed
+
+    Do not get muddled and crash if focusing a pane that is exiting,
+    reported by Saul Nogueras in GitHub issue 3776.
+
+Origin: upstream, https://github.com/tmux/tmux/commit/424f13fe13036e75b1c80e7751b81529f4cd8e15
+
+diff --git a/window.c b/window.c
+index 43c272bc8e..d53c606e07 100644
+--- a/window.c
++++ b/window.c
+@@ -474,7 +474,7 @@ window_pane_update_focus(struct window_pane *wp)
+ 	struct client	*c;
+ 	int		 focused = 0;
+ 
+-	if (wp != NULL) {
++	if (wp != NULL && (~wp->flags & PANE_EXITED)) {
+ 		if (wp != wp->window->active)
+ 			focused = 0;
+ 		else {

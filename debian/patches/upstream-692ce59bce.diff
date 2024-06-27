@@ -1,0 +1,23 @@
+commit 692ce59bcef5fcbbe60485bada35126ad9b87d59
+Author: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date:   Fri May 24 12:41:24 2024 +0000
+Forwarded: not-needed
+
+    Do not escape $ unless DQ is set, that is the only case where we need to
+    escape it.
+
+Origin: upstream, https://github.com/tmux/tmux/commit/692ce59bcef5fcbbe60485bada35126ad9b87d59
+
+diff --git a/utf8.c b/utf8.c
+index 0abb787534..03ab7e9304 100644
+--- a/utf8.c
++++ b/utf8.c
+@@ -517,7 +517,7 @@ utf8_strvis(char *dst, const char *src, size_t len, int flag)
+ 			/* Not a complete, valid UTF-8 character. */
+ 			src -= ud.have;
+ 		}
+-		if (src[0] == '$' && src < end - 1) {
++		if ((flag & VIS_DQ) && src[0] == '$' && src < end - 1) {
+ 			if (isalpha((u_char)src[1]) ||
+ 			    src[1] == '_' ||
+ 			    src[1] == '{')

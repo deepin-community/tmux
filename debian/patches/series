@@ -1,3 +1,9 @@
 platform-quirks.diff
-upstream-32f2d9d089ce.diff
-upstream-b1a8c0fe022e.diff
+revert-upstream-43e5e80343.diff
+upstream-bd29a48b56.diff
+upstream-6c0067c103.diff
+upstream-aa17f0e0c1.diff
+upstream-3823fa2c57.diff
+upstream-424f13fe13.diff
+upstream-692ce59bce.diff
+upstream-db1665868f.diff

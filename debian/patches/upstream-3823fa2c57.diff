@@ -1,0 +1,32 @@
+commit 3823fa2c577d440649a84af660e4d3b0c095d248
+Author: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date:   Tue Apr 30 12:38:58 2024 +0100
+Forwarded: not-needed
+
+    Send SIGHUP since some programs ignore SIGTERM, from Eduardo Grajeda in GitHub
+    issue 3958.
+
+Origin: upstream, https://github.com/tmux/tmux/commit/3823fa2c577d440649a84af660e4d3b0c095d248
+
+diff --git a/compat/systemd.c b/compat/systemd.c
+index 063474e3dd..bde372ccab 100644
+--- a/compat/systemd.c
++++ b/compat/systemd.c
+@@ -144,6 +144,17 @@ systemd_move_pid_to_new_cgroup(pid_t pid, char **cause)
+ 		goto finish;
+ 	}
+ 
++	/*
++	 * Make sure that the session shells are terminated with SIGHUP since
++	 * bash and friends tend to ignore SIGTERM.
++	 */
++	r = sd_bus_message_append(m, "(sv)", "SendSIGHUP", "b", 1);
++	if (r < 0) {
++		xasprintf(cause, "failed to append to properties: %s",
++		    strerror(-r));
++		goto finish;
++	}
++
+ 	/*
+ 	 * Inherit the slice from the parent process, or default to
+ 	 * "app-tmux.slice" if that fails.

@@ -1,0 +1,20 @@
+commit db1665868ff33375f6ea235ffbbb1996d7946c05
+Author: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date:   Mon Jun 24 08:11:46 2024 +0000
+
+    Check the underline style colour against the correct default value again
+    (it was changed from 0 to 8), from Romain Francoise.
+
+diff --git a/grid.c b/grid.c
+index edada819e1..7862941999 100644
+--- a/grid.c
++++ b/grid.c
+@@ -88,7 +88,7 @@ grid_need_extended_cell(const struct grid_cell_entry *gce,
+ 		return (1);
+ 	if ((gc->fg & COLOUR_FLAG_RGB) || (gc->bg & COLOUR_FLAG_RGB))
+ 		return (1);
+-	if (gc->us != 0) /* only supports 256 or RGB */
++	if (gc->us != 8) /* only supports 256 or RGB */
+ 		return (1);
+ 	if (gc->link != 0)
+ 		return (1);
