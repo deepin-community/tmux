@@ -35,8 +35,10 @@ const struct cmd_entry cmd_source_file_entry = {
 	.name = "source-file",
 	.alias = "source",
 
-	.args = { "Fnqv", 1, -1 },
-	.usage = "[-Fnqv] path ...",
+	.args = { "t:Fnqv", 1, -1, NULL },
+	.usage = "[-Fnqv] " CMD_TARGET_PANE_USAGE " path ...",
+
+	.target = { 't', CMD_FIND_PANE, CMD_FIND_CANFAIL },
 
 	.flags = 0,
 	.exec = cmd_source_file_exec
@@ -65,6 +67,7 @@ static void
 cmd_source_file_complete(struct client *c, struct cmd_source_file_data *cdata)
 {
 	struct cmdq_item	*new_item;
+	u_int			 i;
 
 	if (cfg_finished) {
 		if (cdata->retval == CMD_RETURN_ERROR &&
@@ -75,6 +78,8 @@ cmd_source_file_complete(struct client *c, struct cmd_source_file_data *cdata)
 		cmdq_insert_after(cdata->after, new_item);
 	}
 
+	for (i = 0; i < cdata->nfiles; i++)
+		free(cdata->files[i]);
 	free(cdata->files);
 	free(cdata);
 }
@@ -89,6 +94,7 @@ cmd_source_file_done(struct client *c, const char *path, int error,
 	size_t				 bsize = EVBUFFER_LENGTH(buffer);
 	u_int				 n;
 	struct cmdq_item		*new_item;
+	struct cmd_find_state		*target = cmdq_get_target(item);
 
 	if (!closed)
 		return;
@@ -97,7 +103,7 @@ cmd_source_file_done(struct client *c, const char *path, int error,
 		cmdq_error(item, "%s: %s", path, strerror(error));
 	else if (bsize != 0) {
 		if (load_cfg_from_buffer(bdata, bsize, path, c, cdata->after,
-		    cdata->flags, &new_item) < 0)
+		    target, cdata->flags, &new_item) < 0)
 			cdata->retval = CMD_RETURN_ERROR;
 		else if (new_item != NULL)
 			cdata->after = new_item;
@@ -128,11 +134,11 @@ cmd_source_file_exec(struct cmd *self, struct cmdq_item *item)
 	struct cmd_source_file_data	*cdata;
 	struct client			*c = cmdq_get_client(item);
 	enum cmd_retval			 retval = CMD_RETURN_NORMAL;
-	char				*pattern, *cwd, *expand = NULL;
+	char				*pattern, *cwd, *expanded = NULL;
 	const char			*path, *error;
 	glob_t				 g;
-	int				 i, result;
-	u_int				 j;
+	int				 result;
+	u_int				 i, j;
 
 	cdata = xcalloc(1, sizeof *cdata);
 	cdata->item = item;
@@ -146,13 +152,13 @@ cmd_source_file_exec(struct cmd *self, struct cmdq_item *item)
 
 	utf8_stravis(&cwd, server_client_get_cwd(c, NULL), VIS_GLOB);
 
-	for (i = 0; i < args->argc; i++) {
+	for (i = 0; i < args_count(args); i++) {
+		path = args_string(args, i);
 		if (args_has(args, 'F')) {
-			free(expand);
-			expand = format_single_from_target(item, args->argv[i]);
-			path = expand;
-		} else
-			path = args->argv[i];
+			free(expanded);
+			expanded = format_single_from_target(item, path);
+			path = expanded;
+		}
 		if (strcmp(path, "-") == 0) {
 			cmd_source_file_add(cdata, "-");
 			continue;
@@ -176,15 +182,17 @@ cmd_source_file_exec(struct cmd *self, struct cmdq_item *item)
 				cmdq_error(item, "%s: %s", path, error);
 				retval = CMD_RETURN_ERROR;
 			}
+			globfree(&g);
 			free(pattern);
 			continue;
 		}
-		free(expand);
 		free(pattern);
 
 		for (j = 0; j < g.gl_pathc; j++)
 			cmd_source_file_add(cdata, g.gl_pathv[j]);
+		globfree(&g);
 	}
+	free(expanded);
 
 	cdata->after = item;
 	cdata->retval = retval;

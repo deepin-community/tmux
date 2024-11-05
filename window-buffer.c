@@ -36,7 +36,7 @@ static void		 window_buffer_key(struct window_mode_entry *,
 			     struct client *, struct session *,
 			     struct winlink *, key_code, struct mouse_event *);
 
-#define WINDOW_BUFFER_DEFAULT_COMMAND "paste-buffer -b '%%'"
+#define WINDOW_BUFFER_DEFAULT_COMMAND "paste-buffer -p -b '%%'"
 
 #define WINDOW_BUFFER_DEFAULT_FORMAT \
 	"#{t/p:buffer_created}: #{buffer_sample}"
@@ -308,7 +308,7 @@ window_buffer_get_key(void *modedata, void *itemdata, u_int line)
 	}
 	pb = paste_get_name(item->name);
 	if (pb == NULL)
-		return KEYC_NONE;
+		return (KEYC_NONE);
 
 	ft = format_create(NULL, NULL, FORMAT_NONE, 0);
 	format_defaults(ft, NULL, NULL, 0, NULL);
@@ -320,7 +320,7 @@ window_buffer_get_key(void *modedata, void *itemdata, u_int line)
 	key = key_string_lookup_string(expanded);
 	free(expanded);
 	format_free(ft);
-	return key;
+	return (key);
 }
 
 static struct screen *
@@ -343,10 +343,10 @@ window_buffer_init(struct window_mode_entry *wme, struct cmd_find_state *fs,
 		data->key_format = xstrdup(WINDOW_BUFFER_DEFAULT_KEY_FORMAT);
 	else
 		data->key_format = xstrdup(args_get(args, 'K'));
-	if (args == NULL || args->argc == 0)
+	if (args == NULL || args_count(args) == 0)
 		data->command = xstrdup(WINDOW_BUFFER_DEFAULT_COMMAND);
 	else
-		data->command = xstrdup(args->argv[0]);
+		data->command = xstrdup(args_string(args, 0));
 
 	data->data = mode_tree_start(wp, args, window_buffer_build,
 	    window_buffer_draw, window_buffer_search, window_buffer_menu, NULL,
@@ -408,8 +408,17 @@ window_buffer_do_delete(void *modedata, void *itemdata,
 	struct window_buffer_itemdata	*item = itemdata;
 	struct paste_buffer		*pb;
 
-	if (item == mode_tree_get_current(data->data))
-		mode_tree_down(data->data, 0);
+	if (item == mode_tree_get_current(data->data) &&
+	    !mode_tree_down(data->data, 0)) {
+		/*
+		 *If we were unable to select the item further down we are at
+		 * the end of the list. Move one element up instead, to make
+		 * sure that we preserve a valid selection or we risk having
+		 * the tree build logic reset it to the first item.
+		 */
+		mode_tree_up(data->data, 0);
+	}
+
 	if ((pb = paste_get_name(item->name)) != NULL)
 		paste_free(pb);
 }
@@ -508,6 +517,11 @@ window_buffer_key(struct window_mode_entry *wme, struct client *c,
 	struct window_buffer_itemdata	*item;
 	int				 finished;
 
+	if (paste_is_empty()) {
+		finished = 1;
+		goto out;
+	}
+
 	finished = mode_tree_key(mtd, c, &key, m, NULL, NULL);
 	switch (key) {
 	case 'e':
@@ -534,7 +548,9 @@ window_buffer_key(struct window_mode_entry *wme, struct client *c,
 		finished = 1;
 		break;
 	}
-	if (finished || paste_get_top(NULL) == NULL)
+
+out:
+	if (finished || paste_is_empty())
 		window_pane_reset_mode(wp);
 	else {
 		mode_tree_draw(mtd);

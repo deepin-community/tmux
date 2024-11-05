@@ -1,2 +1,2 @@
-Tests: smoketest, utmp
+Tests: smoketest, jemalloc
 Depends: @
