@@ -32,7 +32,7 @@ const struct cmd_entry cmd_swap_pane_entry = {
 	.name = "swap-pane",
 	.alias = "swapp",
 
-	.args = { "dDs:t:UZ", 0, 0 },
+	.args = { "dDs:t:UZ", 0, 0, NULL },
 	.usage = "[-dDUZ] " CMD_SRCDST_PANE_USAGE,
 
 	.source = { 's', CMD_FIND_PANE, CMD_FIND_DEFAULT_MARKED },
@@ -128,13 +128,16 @@ cmd_swap_pane_exec(struct cmd *self, struct cmdq_item *item)
 			window_set_active_pane(dst_w, src_wp, 1);
 	}
 	if (src_w != dst_w) {
-		if (src_w->last == src_wp)
-			src_w->last = NULL;
-		if (dst_w->last == dst_wp)
-			dst_w->last = NULL;
+		window_pane_stack_remove(&src_w->last_panes, src_wp);
+		window_pane_stack_remove(&dst_w->last_panes, dst_wp);
+		colour_palette_from_option(&src_wp->palette, src_wp->options);
+		colour_palette_from_option(&dst_wp->palette, dst_wp->options);
 	}
 	server_redraw_window(src_w);
 	server_redraw_window(dst_w);
+	notify_window("window-layout-changed", src_w);
+	if (src_w != dst_w)
+		notify_window("window-layout-changed", dst_w);
 
 out:
 	if (window_pop_zoom(src_w))

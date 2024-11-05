@@ -1,0 +1,33 @@
+commit 934035db7197d4510b330df8d8963f78e9c8756d
+Author: Nicholas Marriott <nicholas.marriott@gmail.com>
+Date:   Mon Oct 14 20:26:45 2024 +0000
+Forwarded: not-needed
+Origin: upstream, https://github.com/tmux/tmux/commit/934035db7197d4510b330df8d8963f78e9c8756d
+
+    Set ACS flag for REP. Reported by Romain Francoise, GitHub issue 4182.
+
+diff --git a/input.c b/input.c
+index 439e4010e9..b13e078f60 100644
+--- a/input.c
++++ b/input.c
+@@ -1349,7 +1348,7 @@ input_csi_dispatch(struct input_ctx *ictx)
+ 	struct screen_write_ctx	       *sctx = &ictx->ctx;
+ 	struct screen		       *s = sctx->s;
+ 	struct input_table_entry       *entry;
+-	int				i, n, m, ek;
++	int				i, n, m, ek, set;
+ 	u_int				cx, bg = ictx->cell.cell.bg;
+ 
+ 	if (ictx->flags & INPUT_DISCARD)
+@@ -1592,6 +1591,11 @@ input_csi_dispatch(struct input_ctx *ictx)
+ 		if (~ictx->flags & INPUT_LAST)
+ 			break;
+ 
++		set = ictx->cell.set == 0 ? ictx->cell.g0set : ictx->cell.g1set;
++		if (set == 1)
++			ictx->cell.cell.attr |= GRID_ATTR_CHARSET;
++		else
++			ictx->cell.cell.attr &= ~GRID_ATTR_CHARSET;
+ 		utf8_copy(&ictx->cell.cell.data, &ictx->last);
+ 		for (i = 0; i < n; i++)
+ 			screen_write_collect_add(sctx, &ictx->cell.cell);

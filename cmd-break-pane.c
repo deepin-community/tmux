@@ -34,7 +34,7 @@ const struct cmd_entry cmd_break_pane_entry = {
 	.name = "break-pane",
 	.alias = "breakp",
 
-	.args = { "abdPF:n:s:t:", 0, 0 },
+	.args = { "abdPF:n:s:t:", 0, 0, NULL },
 	.usage = "[-abdP] [-F format] [-n window-name] [-s src-pane] "
 		 "[-t dst-window]",
 
@@ -115,6 +115,7 @@ cmd_break_pane_exec(struct cmd *self, struct cmdq_item *item)
 
 	layout_init(w, wp);
 	wp->flags |= PANE_CHANGED;
+	colour_palette_from_option(&wp->palette, wp->options);
 
 	if (idx == -1)
 		idx = -1 - options_get_number(dst_s->options, "base-index");

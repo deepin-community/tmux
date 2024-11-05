@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+if [ "$(uname -s)" != "Linux" ]; then
+    exit 0
+fi
+
+if env MALLOC_CONF=abort_conf:true,invalid tmux -V >/dev/null 2>&1; then
+    # This is supposed to fail with an invalid configuration:
+    # tmux is not built with jemalloc as intended...
+    exit 1
+fi

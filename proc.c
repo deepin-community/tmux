@@ -56,6 +56,7 @@ struct tmuxpeer {
 
 	struct imsgbuf	 ibuf;
 	struct event	 event;
+	uid_t		 uid;
 
 	int		 flags;
 #define PEER_BAD 0x1
@@ -92,8 +93,9 @@ proc_event_cb(__unused int fd, short events, void *arg)
 			log_debug("peer %p message %d", peer, imsg.hdr.type);
 
 			if (peer_check_version(peer, &imsg) != 0) {
-				if (imsg.fd != -1)
-					close(imsg.fd);
+				fd = imsg_get_fd(&imsg);
+				if (fd != -1)
+					close(fd);
 				imsg_free(&imsg);
 				break;
 			}
@@ -192,18 +194,13 @@ proc_start(const char *name)
 	log_debug("%s started (%ld): version %s, socket %s, protocol %d", name,
 	    (long)getpid(), getversion(), socket_path, PROTOCOL_VERSION);
 	log_debug("on %s %s %s", u.sysname, u.release, u.version);
-	log_debug("using libevent %s (%s)"
+	log_debug("using libevent %s %s", event_get_version(), event_get_method());
 #ifdef HAVE_UTF8PROC
-	    "; utf8proc %s"
+	log_debug("using utf8proc %s", utf8proc_version());
 #endif
 #ifdef NCURSES_VERSION
-	    "; ncurses " NCURSES_VERSION
+	log_debug("using ncurses %s %06u", NCURSES_VERSION, NCURSES_VERSION_PATCH);
 #endif
-	    , event_get_version(), event_get_method()
-#ifdef HAVE_UTF8PROC
-	    , utf8proc_version ()
-#endif
-	);
 
 	tp = xcalloc(1, sizeof *tp);
 	tp->name = xstrdup(name);
@@ -308,6 +305,7 @@ proc_add_peer(struct tmuxproc *tp, int fd,
     void (*dispatchcb)(struct imsg *, void *), void *arg)
 {
 	struct tmuxpeer	*peer;
+	gid_t		 gid;
 
 	peer = xcalloc(1, sizeof *peer);
 	peer->parent = tp;
@@ -317,6 +315,9 @@ proc_add_peer(struct tmuxproc *tp, int fd,
 
 	imsg_init(&peer->ibuf, fd);
 	event_set(&peer->event, fd, EV_READ, proc_event_cb, peer);
+
+	if (getpeereid(fd, &peer->uid, &gid) != 0)
+		peer->uid = (uid_t)-1;
 
 	log_debug("add peer %p: %d (%p)", peer, fd, arg);
 	TAILQ_INSERT_TAIL(&tp->peers, peer, entry);
@@ -342,6 +343,12 @@ void
 proc_kill_peer(struct tmuxpeer *peer)
 {
 	peer->flags |= PEER_BAD;
+}
+
+void
+proc_flush_peer(struct tmuxpeer *peer)
+{
+	imsg_flush(&peer->ibuf);
 }
 
 void
@@ -372,4 +379,10 @@ proc_fork_and_daemon(int *fd)
 		*fd = pair[0];
 		return (pid);
 	}
+}
+
+uid_t
+proc_get_peer_uid(struct tmuxpeer *peer)
+{
+	return (peer->uid);
 }

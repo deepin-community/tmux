@@ -1,3 +1,248 @@
+tmux (3.5a-2) unstable; urgency=medium
+
+  * Cherry-pick commit 934035db71 from upstream.
+  * Stop building with utempter support (closes: #1084952).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 15 Oct 2024 22:09:35 +0200
+
+tmux (3.5a-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 05 Oct 2024 10:36:25 +0200
+
+tmux (3.5-2) unstable; urgency=low
+
+  * Include upstream regression fixes from the `tmux-3.5a' hotfix branch.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 04 Oct 2024 22:25:21 +0200
+
+tmux (3.5-1) unstable; urgency=low
+
+  * New upstream release.
+  * Merge packaging changes from experimental.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 28 Sep 2024 11:19:20 +0200
+
+tmux (3.5~git20240823-2) experimental; urgency=medium
+
+  * Cherry-pick commit 6e9a914014 on top of previous snapshot to fix
+    broken layout key bindings.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 23 Aug 2024 15:15:58 +0200
+
+tmux (3.5~git20240823-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 7990e5fa8f.
+  * Set branch to `experimental' in Vcs-Git.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 23 Aug 2024 10:10:36 +0200
+
+tmux (3.5~git20240720-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit 3c2621b41b.
+  * Build with jemalloc memory allocator on Linux architectures.
+  * Add new autopkgtest checking that tmux is built against jemalloc.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 20 Jul 2024 10:55:10 +0200
+
+tmux (3.4-8) unstable; urgency=medium
+
+  * Cherry-pick commit 2ac0faf119 from upstream.
+  * Add missing Origin field to db1665868f patch.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 23 Aug 2024 16:05:05 +0200
+
+tmux (3.4-7) unstable; urgency=medium
+
+  * Cherry-pick commit db1665868f from upstream to fix memory usage of
+    grid data (closes: #1073981).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 24 Jun 2024 21:03:23 +0200
+
+tmux (3.4-6) unstable; urgency=medium
+
+  [ Aurelien Jarno ]
+  * Drop kfreebsd-* specific build-depends, the ports have been removed.
+
+  [ Romain Francoise ]
+  * Drop kFreeBSD-specific parts of debian/patches/platform-quirks.diff.
+  * Cherry-pick commit 692ce59bce to fix wrong escaping of '$'.
+  * Add more patch metadata to upstream patches.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 09 Jun 2024 13:08:36 +0200
+
+tmux (3.4-5) unstable; urgency=medium
+
+  * Cherry-pick more upstream fixes:
+    + 3823fa2c57: start systemd scope with SendSIGHUP=yes to prevent hang
+      on system shutdown.
+    + 424f13fe13: don't crash server when calling switch-client from
+      pane-died hook.
+  * Revert upstream commit 43e5e80343 which breaks search of wrapped lines.
+  * Version build-dependency on libncurses-dev to ensure we pick up updated
+    symbol versions for ncurses 6.5.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 09 May 2024 17:43:16 +0200
+
+tmux (3.4-4) unstable; urgency=medium
+
+  * Add tmpfiles.d configuration file to prevent automatic removal of tmux
+    user directories under /tmp (closes: #1070724).
+  * Update metadata on upstream patches.
+  * Bump Standards-Version to 4.7.0.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 08 May 2024 18:46:48 +0200
+
+tmux (3.4-3) unstable; urgency=medium
+
+  * Cherry-pick commit aa17f0e0c1 from upstream to fix crash on invalid
+    Sixel input.
+  * Re-enable Sixel support.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 23 Mar 2024 17:07:31 +0100
+
+tmux (3.4-2) unstable; urgency=medium
+
+  [ Sven Joachim ]
+  * Only enable systemd support on Linux architectures.
+
+  [ Romain Francoise ]
+  * Disable Sixel support for now due to possible server crash on invalid
+    input (GitHub issue #3839).
+  * Cherry-pick commit bd29a48b56 from upstream to fix split-window -p
+    flag confusion.
+  * Cherry-pick changes from upstream PR #3860 fixing a use-after-free
+    when manipulating zoomed windows.
+  * Drop obsolete build-depends (lintian warning).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 09 Mar 2024 12:16:21 +0100
+
+tmux (3.4-1) unstable; urgency=low
+
+  * New upstream release (closes: #1063838).
+    + Fixes crash when pasting into dead panes (closes: #1063237).
+  * Import packaging from experimental, enabling support for Sixel,
+    systemd integration, and management of /etc/shells using dpkg
+    triggers.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Tue, 13 Feb 2024 18:42:59 +0100
+
+tmux (3.4~git20240106-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit e809c2ec35.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 06 Jan 2024 16:55:56 +0100
+
+tmux (3.4~git20230924-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit b777780720.
+  * Enable Sixel support.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 24 Sep 2023 13:12:42 +0200
+
+tmux (3.4~git20230722-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit fda3937734.
+  * Apply changes by Helmut Grohne <helmut@subdivi.de> to manage
+    /etc/shells using dpkg triggers (closes: #1023315), avoiding
+    issues related to remove/reinstall cycles (closes: #939889).
+  * Drop now-obsolete debian/preinst.
+  * Silence lintian warning about Tg macro, which is from mandoc
+    1.14.6 and is not a typo.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 22 Jul 2023 23:22:31 +0200
+
+tmux (3.4~git20230617-1) experimental; urgency=medium
+
+  * New upstream snapshot, from Git commit f41c536ff3.
+  * Enable systemd integration (for socket activation and cgroups support).
+  * Build-depend on libncurses-dev, not libncurses5-dev.
+  * Bump Standards-Version to 4.6.2.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 17 Jun 2023 12:11:52 +0200
+
+tmux (3.3a-5) unstable; urgency=medium
+
+  * Fix backport of commit bf636d9575 which breaks OSC 52 clipboard
+    access, with thanks to Claudio Leite (LP: #2040080).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 22 Oct 2023 16:34:17 +0200
+
+tmux (3.3a-4) unstable; urgency=medium
+
+  * Backport upstream changes related to ncurses tparm handling.
+    With thanks to Sven Joachim <svenjoac@gmx.de>, who had independently
+    also worked on this backport (closes: #1038269).
+  * Build-depend on libncurses-dev, not libncurses5-dev.
+  * Bump Standards-Version to 4.6.2.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 17 Jun 2023 17:08:17 +0200
+
+tmux (3.3a-3) unstable; urgency=medium
+
+  * debian/source/lintian-overrides: Update renamed lintian tag names in
+    lintian overrides.
+  * debian/copyright: Update copyright year.
+  * debian/watch: use Github tags page instead of releases.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 31 Oct 2022 17:55:13 +0100
+
+tmux (3.3a-2) unstable; urgency=medium
+
+  [ Pino Toscano ]
+  * Cherry-pick commit 19344efa78 from upstream to fix the fallback
+    implementation of getpeereid() (used on Hurd).
+  * Drop the local defines for MAXPATHLEN & MAXHOSTNAMELEN for platforms that
+    do not have them (i.e. Hurd), as they are not used anymore in generic code.
+
+  [ Gioele Barabucci ]
+  * debian/postinst: Remove test for ancient version.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Mon, 29 Aug 2022 22:53:06 +0200
+
+tmux (3.3a-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Thu, 09 Jun 2022 20:04:26 +0200
+
+tmux (3.3-2) unstable; urgency=medium
+
+  * Cherry-pick fixes from upstream Git:
+    + 0f6227f46b: don't silently delete or rename the most recent buffer
+    + 18838fbc87: fix crash when using `run-shell' in config file
+    + 3edda3c5e7: do not unintentionally turn off all mouse mode
+  * Remove obsolete field Name from debian/upstream/metadata.
+  * Upload to unstable.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 04 Jun 2022 17:08:29 +0200
+
+tmux (3.3-1) experimental; urgency=medium
+
+  * New upstream release, fixes size setting when detached (LP: #1976110).
+  * Drop all upstream patches.
+  * Bump Standards-Version to 4.6.1.
+  * debian/watch: Mangle Debian version rather than upstream's.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Wed, 01 Jun 2022 22:40:47 +0200
+
+tmux (3.3~rc1-2) experimental; urgency=medium
+
+  * Add my own patch from GitHub PR #2899 to fix cross-compilation again.
+  * debian/watch: Add mangle rules to correctly handle -rc releases (which
+    we number -rc1 in Debian).
+  * Set branch to `experimental' in Vcs-Git.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sun, 19 Sep 2021 12:50:47 +0200
+
+tmux (3.3~rc1-1) experimental; urgency=medium
+
+  * New upstream release candidate (3.3-rc).
+  * Update debian/copyright (closes: #904407).
+
+ -- Romain Francoise <rfrancoise@debian.org>  Sat, 18 Sep 2021 12:35:01 +0200
+
 tmux (3.2a-4) unstable; urgency=medium
 
   * Cherry-pick commit b1a8c0fe022e from upstream to fix cross-compilation

@@ -2,8 +2,20 @@
 
 export DEB_BUILD_MAINT_OPTIONS=hardening=+all
 
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+enable_jemalloc = --enable-jemalloc
+enable_systemd  = --enable-systemd
+endif
+
 %:
 	dh $@
 
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-utempter
+	dh_auto_configure --			\
+		$(enable_jemalloc)		\
+		--enable-sixel			\
+		$(enable_systemd)
+
+execute_after_dh_auto_install:
+	install -D -m 644 debian/shells \
+		$(CURDIR)/debian/tmux/usr/share/debianutils/shells.d/tmux
