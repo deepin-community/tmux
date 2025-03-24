@@ -1,3 +1,9 @@
+tmux (3.5a-2deepin1) unstable; urgency=medium
+
+  * Use ncurses 6.4.
+
+ -- xiangzelong <xiangzelong@deepin.org>  Mon, 24 Mar 2025 16:11:58 +0800
+
 tmux (3.5a-2) unstable; urgency=medium
 
   * Cherry-pick commit 934035db71 from upstream.
