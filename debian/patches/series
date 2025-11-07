@@ -1,2 +1,3 @@
 platform-quirks.diff
 upstream-934035db71.diff
+0003-image-sixel.c-Fix-xmalloc-error-when-si-ncolours-0.patch

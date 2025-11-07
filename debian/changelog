@@ -1,3 +1,9 @@
+tmux (3.5a-2deepin2) unstable; urgency=medium
+
+  * image-sixel.c: Fix xmalloc error when si->ncolours == 0.
+
+ -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 07 Nov 2025 11:07:29 +0800
+
 tmux (3.5a-2deepin1) unstable; urgency=medium
 
   * Use ncurses 6.4.

@@ -1,0 +1,21 @@
+From: Tianyu Chen <sweetyfish@deepin.org>
+Date: Fri, 7 Nov 2025 11:06:10 +0800
+Subject: image-sixel.c: Fix xmalloc error when si->ncolours == 0
+
+---
+ image-sixel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/image-sixel.c b/image-sixel.c
+index e23d17f..d95cc45 100644
+--- a/image-sixel.c
++++ b/image-sixel.c
+@@ -432,7 +432,7 @@ sixel_scale(struct sixel_image *si, u_int xpixel, u_int ypixel, u_int ox,
+ 		}
+ 	}
+ 
+-	if (colours) {
++	if (colours && si->ncolours != 0) {
+ 		new->colours = xmalloc(si->ncolours * sizeof *new->colours);
+ 		for (i = 0; i < si->ncolours; i++)
+ 			new->colours[i] = si->colours[i];
