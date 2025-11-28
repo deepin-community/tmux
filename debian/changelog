@@ -1,14 +1,29 @@
-tmux (3.5a-2deepin2) unstable; urgency=medium
+tmux (3.6a-1) unstable; urgency=medium
 
-  * image-sixel.c: Fix xmalloc error when si->ncolours == 0.
+  [ Sébastien Delafond ]
+  * Add d/gbp.conf
+  * d/watch: v5
+  * Bump up Standards-Version
+  * d/gbp: use pristine-tar
+  * d/gbp: use gz
+  * d/watch: uversion mangle
+  * New upstream version 3.6a
+  * Rediff patches
 
- -- Tianyu Chen <sweetyfish@deepin.org>  Fri, 07 Nov 2025 11:07:29 +0800
+ -- Sebastien Delafond <seb@debian.org>  Wed, 26 Nov 2025 16:50:39 +0100
 
-tmux (3.5a-2deepin1) unstable; urgency=medium
+tmux (3.5a-3) unstable; urgency=medium
 
-  * Use ncurses 6.4.
+  [ Kirill Rekhov ]
+  * d/u/metadata: add 'Documentation' field and update d/control
+    'Homepage' link field.
 
- -- xiangzelong <xiangzelong@deepin.org>  Mon, 24 Mar 2025 16:11:58 +0800
+  [ Romain Francoise ]
+  * Update Vcs-* fields to point to new location in the Debian group on Salsa.
+  * Transfer ownership to Sebastien Delafond, who has kindly accepted to
+    maintain tmux from now on.
+
+ -- Romain Francoise <rfrancoise@debian.org>  Fri, 07 Feb 2025 18:25:06 +0100
 
 tmux (3.5a-2) unstable; urgency=medium
 
